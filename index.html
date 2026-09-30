@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC TAC TOE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        <h1>TIC TAC TOE</h1>
+        <main>
+            <section>
+                <form action="" id="playerform">
+
+                    <label for="player1">Player 1:</label>
+                    <input type="text" id="player1" name="player1">
+
+                    <label for="player2">Player 2:</label>
+                    <input type="text" id="player2" name="player2">
+
+                    <button onclick="showPlayer()">SUBMIT</button>
+                </form>
+            </section>
+            <section class="grid">
+                <div class="box" id="box0"></div>
+                <div class="box" id="box1"></div>
+                <div class="box" id="box2"></div>
+                <div class="box" id="box3"></div>
+                <div class="box" id="box4"></div>
+                <div class="box" id="box5"></div>
+                <div class="box" id="box6"></div>
+                <div class="box" id="box7"></div>
+                <div class="box" id="box8"></div>
+            </section>
+
+            <section>
+                <h2 id="turn">TURN: </h2>
+                <p id="player1text">Player 1: </p>
+                <p id="player2text">Player 2: </p>
+            </section>
+
+        </main>
+
+            <script src="index.js"></script>
+</body>
+</html>
