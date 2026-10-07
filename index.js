@@ -40,7 +40,7 @@ gridArr.forEach((box,index)=>{
 
 
 
-function showPlayer(){
+function showPlayer(event){
     event.preventDefault();
     player1text.innerText = "Player 1: " + player1form.value;
     player2text.innerText = "Player 2: " + player2form.value;
