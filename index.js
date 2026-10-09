@@ -69,8 +69,8 @@ function checkWinner(){
                 c = gridTexts[winningArr[2]];
                 
             })
-            if ( a === b && a === c){
-                console.log ("winner!")
+            if (a !== "" && a === b && a === c) {
+                console.log("winner!");
             }
             
 
