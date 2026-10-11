@@ -10,6 +10,7 @@ const player2text = document.getElementById("player2text");
 const turnEl = document.getElementById("turn");
 
 let turn = "";
+let gameOver = false;
 
 const gridArr = [];
 
@@ -25,7 +26,8 @@ gridArr.forEach((box, index) => {
 
     box.addEventListener("click", () => {
 
-        // Don't allow clicking an already-filled box
+        if (gameOver) return;
+
         if (gridArr[index].innerText !== "") {
             return;
         }
@@ -103,11 +105,10 @@ function checkWinner() {
 
         // Check if all three are same AND not empty
         if (a !== "" && a === b && a === c) {
-
+            gameOver = true;
             console.log("Winner!");
-
             turnEl.innerText = "Winner: " + a;
-        }
+        } 
 
     });
 }
