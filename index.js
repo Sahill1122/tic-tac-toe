@@ -47,7 +47,7 @@ gridArr.forEach((box, index) => {
         gridArr[index].innerText = turn;
 
         // Update turn display
-        turnEl.innerText = "Turn: " + turn;
+        turnEl.innerText = "Turn: " + (turn === "X" ? "O" : "X");
 
         // Check winner
         checkWinner();
