@@ -109,6 +109,11 @@ function checkWinner() {
             console.log("Winner!");
             turnEl.innerText = "Winner: " + a;
         } 
+        // Check for a draw
+    if (!gameOver && gridTexts.every(value => value !== "")) {
+        gameOver = true;
+        turnEl.innerText = "It's a Draw!";
+    }
 
     });
 }
