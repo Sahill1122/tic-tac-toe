@@ -1,4 +1,3 @@
-
 const playerform = document.getElementById("playerform");
 
 const player1form = document.getElementById("player1");
@@ -8,112 +7,109 @@ const player1text = document.getElementById("player1text");
 const player2text = document.getElementById("player2text");
 
 const turnEl = document.getElementById("turn");
+const restartBtn = document.getElementById("restart");
 
-let turn = "";
+let turn = "X";          // X always starts
 let gameOver = false;
+let player1Name = "Player 1";   // X
+let player2Name = "Player 2";   // O
 
 const gridArr = [];
 
 // Get all 9 boxes
 for (let i = 0; i <= 8; i++) {
-    let box = document.getElementById("box" + i);
-    gridArr.push(box);
+    gridArr.push(document.getElementById("box" + i));
 }
 
+// Helper: name of whoever's symbol is passed in
+function nameOf(symbol) {
+    return symbol === "X" ? player1Name : player2Name;
+}
 
-// Add click event to every box
-gridArr.forEach((box, index) => {
+// Show whose turn it is
+function updateTurnText() {
+    turnEl.textContent = "TURN: " + nameOf(turn) + " (" + turn + ")";
+}
 
-    box.addEventListener("click", () => {
-
-        if (gameOver) return;
-
-        if (gridArr[index].innerText !== "") {
-            return;
-        }
-
-        // Change turn
-        if (turn === "") {
-            turn = "X";
-        }
-        else if (turn === "X") {
-            turn = "O";
-        }
-        else {
-            turn = "X";
-        }
-
-        // Put X or O inside the box
-        gridArr[index].innerText = turn;
-
-        // Update turn display
-        turnEl.innerText = "Turn: " + (turn === "X" ? "O" : "X");
-
-        // Check winner
-        checkWinner();
-    });
-});
-
-
-// Player form
-playerform.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    player1text.innerText = "Player 1: " + player1form.value;
-    player2text.innerText = "Player 2: " + player2form.value;
-
-});
-
+updateTurnText();
 
 // All possible winning combinations
 const winningCombinations = [
-
-    // Horizontal
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-
-    // Vertical
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-
-    // Diagonal
-    [0, 4, 8],
-    [2, 4, 6]
-
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],   // Horizontal
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],   // Vertical
+    [0, 4, 8], [2, 4, 6]               // Diagonal
 ];
 
+// Add click event to every box
+gridArr.forEach((box) => {
+    box.addEventListener("click", () => {
 
-// Check winner
+        if (gameOver) return;
+        if (box.textContent !== "") return;
+
+        // Place the current symbol
+        box.textContent = turn;
+
+        // Check winner / draw
+        if (checkWinner()) return;
+
+        // Switch turn
+        turn = turn === "X" ? "O" : "X";
+        updateTurnText();
+    });
+});
+
+// Player form
+playerform.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    player1Name = player1form.value.trim() || "Player 1";
+    player2Name = player2form.value.trim() || "Player 2";
+
+    player1text.textContent = "Player 1 (X): " + player1Name;
+    player2text.textContent = "Player 2 (O): " + player2Name;
+
+    if (!gameOver) updateTurnText();
+});
+
+// Check winner. Returns true if the game ended.
 function checkWinner() {
-
-    let gridTexts = [];
-
-    // Get X/O from all boxes
-    for (let i = 0; i < 9; i++) {
-        gridTexts.push(gridArr[i].innerText);
-    }
+    const gridTexts = gridArr.map((box) => box.textContent);
 
     // Check every winning combination
-    winningCombinations.forEach((winningArr) => {
+    for (const [a, b, c] of winningCombinations) {
+        if (gridTexts[a] !== "" &&
+            gridTexts[a] === gridTexts[b] &&
+            gridTexts[a] === gridTexts[c]) {
 
-        let a = gridTexts[winningArr[0]];
-        let b = gridTexts[winningArr[1]];
-        let c = gridTexts[winningArr[2]];
-
-        // Check if all three are same AND not empty
-        if (a !== "" && a === b && a === c) {
             gameOver = true;
-            console.log("Winner!");
-            turnEl.innerText = "Winner: " + a;
-        } 
-        // Check for a draw
-    if (!gameOver && gridTexts.every(value => value !== "")) {
-        gameOver = true;
-        turnEl.innerText = "It's a Draw!";
+            turnEl.textContent = "WINNER: " + nameOf(gridTexts[a]) + " 🎉";
+
+            // Highlight winning boxes
+            [a, b, c].forEach((i) => {
+                gridArr[i].style.backgroundColor = "green";
+            });
+            return true;
+        }
     }
 
-    });
+    // Draw check: runs ONCE, after all combinations are checked
+    if (gridTexts.every((value) => value !== "")) {
+        gameOver = true;
+        turnEl.textContent = "IT'S A DRAW!";
+        return true;
+    }
+
+    return false;
 }
+
+// Restart the game
+restartBtn.addEventListener("click", () => {
+    gridArr.forEach((box) => {
+        box.textContent = "";
+        box.style.backgroundColor = "";
+    });
+    turn = "X";
+    gameOver = false;
+    updateTurnText();
+});
