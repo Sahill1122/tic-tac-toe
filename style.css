@@ -58,4 +58,39 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
+
+/* X and O colors */
+.box.x { color: white; }
+.box.o { color: #3108fe; }
+
+/* Tablets and phones: stack the 3 parts */
+@media (max-width: 1000px) {
+    main {
+        flex-direction: column;
+        padding: 1rem 0;
+    }
+
+    main > section:first-child,
+    main > section:last-child {
+        width: 100%;
+    }
+}
+
+/* Small phones: make the board smaller */
+@media (max-width: 500px) {
+    .grid {
+        grid-template-columns: repeat(3, 6rem);
+    }
+
+    .box {
+        height: 6rem;
+        font-size: 3rem;
+    }
 }
