@@ -9,7 +9,7 @@ const player2text = document.getElementById("player2text");
 const turnEl = document.getElementById("turn");
 const restartBtn = document.getElementById("restart");
 
-let turn = "X";          // X always starts
+let turn = "X";                 // X always starts
 let gameOver = false;
 let player1Name = "Player 1";   // X
 let player2Name = "Player 2";   // O
@@ -49,6 +49,7 @@ gridArr.forEach((box) => {
 
         // Place the current symbol
         box.textContent = turn;
+        box.classList.add(turn === "X" ? "x" : "o");
 
         // Check winner / draw
         if (checkWinner()) return;
@@ -108,6 +109,7 @@ restartBtn.addEventListener("click", () => {
     gridArr.forEach((box) => {
         box.textContent = "";
         box.style.backgroundColor = "";
+        box.classList.remove("x", "o");
     });
     turn = "X";
     gameOver = false;
