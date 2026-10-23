@@ -7,12 +7,18 @@ const player1text = document.getElementById("player1text");
 const player2text = document.getElementById("player2text");
 
 const turnEl = document.getElementById("turn");
+const scoreEl = document.getElementById("score");
 const restartBtn = document.getElementById("restart");
 
 let turn = "X";                 // X always starts
 let gameOver = false;
 let player1Name = "Player 1";   // X
 let player2Name = "Player 2";   // O
+
+// Scores
+let player1Score = 0;
+let player2Score = 0;
+let draws = 0;
 
 const gridArr = [];
 
@@ -31,7 +37,16 @@ function updateTurnText() {
     turnEl.textContent = "TURN: " + nameOf(turn) + " (" + turn + ")";
 }
 
+// Show the score
+function updateScore() {
+    scoreEl.textContent =
+        player1Name + ": " + player1Score + " | " +
+        player2Name + ": " + player2Score + " | " +
+        "Draws: " + draws;
+}
+
 updateTurnText();
+updateScore();
 
 // All possible winning combinations
 const winningCombinations = [
@@ -70,6 +85,7 @@ playerform.addEventListener("submit", function (event) {
     player1text.textContent = "Player 1 (X): " + player1Name;
     player2text.textContent = "Player 2 (O): " + player2Name;
 
+    updateScore();
     if (!gameOver) updateTurnText();
 });
 
@@ -86,9 +102,17 @@ function checkWinner() {
             gameOver = true;
             turnEl.textContent = "WINNER: " + nameOf(gridTexts[a]) + " 🎉";
 
-            // Highlight winning boxes
+            // Add 1 point to the winner
+            if (gridTexts[a] === "X") {
+                player1Score++;
+            } else {
+                player2Score++;
+            }
+            updateScore();
+
+            // Highlight winning boxes using a CSS class
             [a, b, c].forEach((i) => {
-                gridArr[i].style.backgroundColor = "green";
+                gridArr[i].classList.add("win");
             });
             return true;
         }
@@ -97,6 +121,8 @@ function checkWinner() {
     // Draw check: runs ONCE, after all combinations are checked
     if (gridTexts.every((value) => value !== "")) {
         gameOver = true;
+        draws++;
+        updateScore();
         turnEl.textContent = "IT'S A DRAW!";
         return true;
     }
@@ -104,12 +130,11 @@ function checkWinner() {
     return false;
 }
 
-// Restart the game
+// Restart the game (the score is kept)
 restartBtn.addEventListener("click", () => {
     gridArr.forEach((box) => {
         box.textContent = "";
-        box.style.backgroundColor = "";
-        box.classList.remove("x", "o");
+        box.classList.remove("x", "o", "win");
     });
     turn = "X";
     gameOver = false;
