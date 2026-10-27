@@ -79,7 +79,16 @@ form {
 .box.o { color: #3108fe; }
 
 /* winning boxes */
-.box.win { background-color: green; }
+.box.win {
+    background-color: green;
+    animation: pop 0.4s;
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
 
 /* Tablets and phones: stack the 3 parts */
 @media (max-width: 1000px) {
