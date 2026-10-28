@@ -16,9 +16,18 @@ let player1Name = "Player 1";   // X
 let player2Name = "Player 2";   // O
 
 // Scores
+// Scores
 let player1Score = 0;
 let player2Score = 0;
 let draws = 0;
+
+// Load the saved score (if any)
+const saved = JSON.parse(localStorage.getItem("tttScore") || "null");
+if (saved) {
+    player1Score = saved.p1;
+    player2Score = saved.p2;
+    draws = saved.draws;
+}
 
 const gridArr = [];
 
