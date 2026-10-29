@@ -47,11 +47,19 @@ function updateTurnText() {
 }
 
 // Show the score
+// Show the score
 function updateScore() {
     scoreEl.textContent =
         player1Name + ": " + player1Score + " | " +
         player2Name + ": " + player2Score + " | " +
         "Draws: " + draws;
+
+    // Save the score in the browser
+    localStorage.setItem("tttScore", JSON.stringify({
+        p1: player1Score,
+        p2: player2Score,
+        draws: draws
+    }));
 }
 
 updateTurnText();
